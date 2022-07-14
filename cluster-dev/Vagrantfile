@@ -42,5 +42,7 @@ Vagrant.configure(2) do |config|
       v.nested  = true
       v.cpus    = CPUS_NODE
     end
+    # --  uncomment below to run custom scripts on that vm alone --
+    #node.vm.provision "shell", path: "./custom.sh"
   end
 end
