@@ -1,0 +1,30 @@
+
+ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+
+VAGRANT_BOX         = "geerlingguy/ubuntu2004"
+VAGRANT_BOX_VERSION = "1.0.4"
+CPUS_NODE    = 2
+MEMORY_NODE  = 3072
+
+Vagrant.configure(2) do |config|
+  config.vm.provision "shell", path: "./kind.sh"
+
+  # Kubernetes Master Server
+  config.vm.define "kind" do |node|
+    node.vm.box               = VAGRANT_BOX
+    node.vm.box_check_update  = false
+    node.vm.box_version       = VAGRANT_BOX_VERSION
+    node.vm.hostname          = "kind.example.com"
+    node.vm.network "private_network", ip: "10.0.0.100"
+    node.vm.provider :virtualbox do |v|
+      v.name    = "kind-cluster"
+      v.memory  = MEMORY_NODE
+      v.cpus    = CPUS_NODE
+    end
+    node.vm.provider :libvirt do |v|
+      v.memory  = MEMORY_NODE
+      v.nested  = true
+      v.cpus    = CPUS_NODE
+    end
+  end
+end
