@@ -9,13 +9,29 @@ MEMORY_NODE  = 3072
 Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "./kind.sh"
 
+  # -- uncomment below to configure all vm's in bridge network. note: indendation --
+  #config.vm.network "public_network",
+  # -- uncomment below for dhcp ip for all vm --
+      #use_dhcp_assigned_default_route: true,
+  # -- uncomment below for network selection --
+      #bridge: "en0: Wi-Fi (AirPort)",
+  # -- uncomment below for custom ip. note will not work for multiple vm --
+      #ip: "192.168.29.59"
+  
   # Kubernetes Master Server
   config.vm.define "kind" do |node|
     node.vm.box               = VAGRANT_BOX
     node.vm.box_check_update  = false
     node.vm.box_version       = VAGRANT_BOX_VERSION
     node.vm.hostname          = "kind.example.com"
-    node.vm.network "private_network", ip: "10.0.0.100"
+    # -- uncomment below custom ip for host network, host network should exists in vbox, ip should be of you vboxnet1 network --
+    #node.vm.network "private_network", ip: "10.0.0.100"
+    # -- below is for host network, host network should exists in vbox --
+    node.vm.network "private_network", type: "dhcp"
+    # -- uncomment below for bridge network only for that instance. ip should be of you host network --
+    #node.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)", ip: "192.168.29.10"
+    # -- uncomment below for bridge network only for that instance (DHCP) --
+    #node.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)", use_dhcp_assigned_default_route: true
     node.vm.provider :virtualbox do |v|
       v.name    = "kind"
       v.memory  = MEMORY_NODE
