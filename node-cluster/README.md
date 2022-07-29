@@ -4,7 +4,7 @@
 VirtualBox > File > Host Network Manager - IP series to be in 10.0.0.1.
 
 <p align="center">
-<img src="host-manager.png" alt="drawing" style="width:400px;margin-left:50%;"/>
+<img src="host-network-manager.png" alt="drawing" style="width:400px;margin-left:50%;"/>
 </p>
 
 Requirements
