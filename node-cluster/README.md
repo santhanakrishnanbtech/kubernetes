@@ -1,4 +1,4 @@
-Kindly support :heart: by giving :star:
+:heart: Kindly support by giving :star:
 ># Kubernetes cluster setup using Vagrant and VirtualBox
 Requirements
 ```shell
