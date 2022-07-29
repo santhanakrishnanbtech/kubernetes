@@ -1,0 +1,48 @@
+
+ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+IP_NW="10.0.0."
+IP_START=10
+CPUS_MASTER_NODE    = 1
+MEMORY_MASTER_NODE  = 2048
+CPUS_WORKER_NODE    = 1
+MEMORY_WORKER_NODE  = 1024
+WORKER_NODES_COUNT  = 2
+
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", env: {"IP_NW" => IP_NW, "IP_START" => IP_START}, inline: <<-SHELL
+      apt-get update -y
+      echo "$IP_NW$((IP_START)) master" >> /etc/hosts
+      echo "$IP_NW$((IP_START+1)) worker01" >> /etc/hosts
+      echo "$IP_NW$((IP_START+2)) worker02" >> /etc/hosts
+  SHELL
+
+  config.vm.box = "bento/ubuntu-18.04"
+  config.vm.box_check_update = true
+
+  config.vm.define "master" do |master|
+    master.vm.hostname = "master"
+    master.vm.network "private_network", ip: IP_NW + "#{IP_START}"
+    master.vm.provider "virtualbox" do |vb|
+        vb.name    = "master"
+        vb.memory  = MEMORY_MASTER_NODE
+        vb.cpus    = CPUS_MASTER_NODE
+    end
+    master.vm.provision "shell", path: "scripts/common.sh"
+    master.vm.provision "shell", path: "scripts/master.sh"
+  end
+
+  (1..WORKER_NODES_COUNT).each do |i|
+  config.vm.define "worker0#{i}" do |node|
+    node.vm.hostname = "worker0#{i}"
+    node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
+    node.vm.provider "virtualbox" do |vb|
+        vb.name   = "worker0#{i}"
+        vb.memory = MEMORY_WORKER_NODE
+        vb.cpus   = CPUS_WORKER_NODE
+    end
+    node.vm.provision "shell", path: "scripts/common.sh"
+    node.vm.provision "shell", path: "scripts/worker.sh"
+  end
+
+  end
+end

@@ -1,0 +1,8 @@
+# General
+.idea/
+
+.vagrant/
+*/.vagrant/
+
+*/configs
+*/configs/
