@@ -47,7 +47,7 @@ $ vagrant ssh kind
 $ sudo mkdir /nas
 ```
 config.yml
-```json
+```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
@@ -69,7 +69,7 @@ nodes:
 ```
 Example 02: Exposing a specific port from KinD control-plane
 config.yml
-```json
+```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
