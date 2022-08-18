@@ -4,7 +4,7 @@ ENV['VAGRANT_NO_PARALLEL'] = 'yes'
 VAGRANT_BOX         = "geerlingguy/ubuntu2004"
 VAGRANT_BOX_VERSION = "1.0.4"
 CPUS_NODE    = 2
-MEMORY_NODE  = 3072
+MEMORY_NODE  = 4096
 
 Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "./kind.sh"

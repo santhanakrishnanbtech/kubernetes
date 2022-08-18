@@ -14,6 +14,10 @@ echo "---------------------[ Install kubectl ]-----------------------"
 sudo curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo chmod +x kubectl
 sudo mv kubectl /usr/bin/kubectl
+echo "--------------------------------------------------------------------------[ Configure kubectl for vagrant user ]"
+mkdir -p /home/vagrant/.kube
+sudo cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
+sudo chown vagrant:vagrant /home/vagrant/.kube/config
 echo "---------------------[ Cluster File ]-----------------------"
 sudo tee ./config<<EOF
 kind: Cluster
